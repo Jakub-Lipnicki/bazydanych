@@ -1,0 +1,32 @@
+ CREATE TABLE postac (id_postaci int NOT NULL PRIMARY KEY AUTO_INCREMENT, nazwa varchar(40), rodzaj ENUM('wiking', 'ptak', 'kobieta'), data_ur DATE, wiek int unsigned);
+
+
+ INSERT INTO postac VALUES (1, "Bjorn", "wiking", "1503-03-15", 35);
+
+ INSERT INTO postac VALUES (2, "Drozda", "ptak", "15030-03-15", 5);
+ INSERT INTO postac VALUES (3, "Tesciowa", "ptak", "1500-03-15", 85);
+UPDATE postac SET wiek=88 WHERE id_postaci=3;
+ CREATE TABLE walizka (id_walizki int NOT NULL PRIMARY KEY AUTO_INCREMENT, pojemnosc int unsigned, kolor ENUM('rozowy', 'czerwony', 'teczowy', 'zolty'), id_wlasciciela int ,FOREIGN KEY(id_wlasciciela) REFERENCES postac(id_postaci)
+ON DELETE CASCADE ON UPDATE CASCADE);
+ALTER TABLE walizka ALTER kolor SET DEFAULT "rozowy";
+INSERT INTO walizka VALUES (1, 3, "czerwony", 1);
+ INSERT INTO walizka VALUES (3, 15, "teczowy", 3);
+ CREATE TABLE izba (adres_budynku int NOT NULL, nazwa_izby varchar(20) NOT NULL,PRIMARY KEY(adres_budynku, nazwa_izby),  metraz int unsigned, wlasciciel int, FOREIGN KEY(wlasciciel) REFERENCES postac(id_postaci) ON DELETE SET NULL)
+;
+ALTER TABLE izba  ADD kolor_izby varchar(20);
+ ALTER TABLE izba ALTER kolor_izby SET DEFAULT "czarny";
+ CREATE TABLE przetwory(id_przetworu int NOT NULL PRIMARY KEY, rok_produkcji YEAR, id_wykonawcy int, FOREIGN KEY(id_wykonawcy) REFERENCES postac(id_postaci), zawartosc varchar(30), dodatek varchar(30), id_konsumenta int, FOREIGN KEY(id_konsumenta) REFERENCES postac(id_postaci));
+ ALTER TABLE przetwory ALTER rok_produkcji SET DEFAULT 1954;
+ALTER TABLE przetwory ALTER dodatek SET DEFAULT "papryczka chilli";
+ INSERT INTO przetwory VALUES (1, 1994, 3, "bigos", "papryczka chilli", 1);
+INSERT INTO postac(id_postaci) VALUES (4);
+INSERT INTO postac(id_postaci) VALUES (5);
+ INSERT INTO postac(id_postaci) VALUES (6);
+ INSERT INTO postac(id_postaci) VALUES (7);
+ INSERT INTO postac(id_postaci) VALUES (8);
+CREATE TABLE statek (nazwa_statku int NOT NULL PRIMARY KEY, rodzaj_statku ENUM(''), data_wodowania DATE, max_ladownosc int unsigned);
+ INSERT INTO statek(nazwa_statku) VALUES('1');
+INSERT INTO statek(nazwa_statku) VALUES(2);
+ ALTER TABLE postac ADD funkcja varchar(30);
+ UPDATE postac SET funkcja="kapitan" WHERE nazwa="Bjorn";
+ ALTER TABLE postac ADD statek int;
