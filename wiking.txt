@@ -30,3 +30,33 @@ INSERT INTO statek(nazwa_statku) VALUES(2);
  ALTER TABLE postac ADD funkcja varchar(30);
  UPDATE postac SET funkcja="kapitan" WHERE nazwa="Bjorn";
  ALTER TABLE postac ADD statek int;
+ALTER TABLE postac ADD FOREIGN KEY(statek) REFERENCES statek(nazwa_statku);
+UPDATE postac SET statek=1 WHERE rodzaj="wiking";
+UPDATE postac SET statek=2 WHERE rodzaj="ptak";
+DROP TABLE izba;
+
+
+LEKCJA 2
+
+DELETE FROM postac WHERE id_postaci=4;
+DELETE FROM postac WHERE id_postaci=5;
+DELETE FROM postac WHERE id_postaci=6;
+ALTER TABLE lipnickij.walizka DROP FOREIGN KEY walizka_ibfk_1;
+ALTER TABLE lipnickij.przetwory DROP FOREIGN KEY przetwory_ibfk_1;
+ALTER TABLE lipnickij.przetwory DROP FOREIGN KEY przetwory_ibfk_2;
+ALTER TABLE postac MODIFY id_postaci int NOT NULL;
+ALTER TABLE postac DROP PRIMARY KEY;
+ALTER TABLE postac MODIFY pesel varchar(11) NOT NULL PRIMARY KEY; ;
+ALTER TABLE postac MODIFY rodzaj ENUM('wiking', 'ptak', 'tesciowa', 'syrena');
+INSERT INTO postac VALUES(4, "Gertruda Nieszczera", "syrena",15030319, 45, NULL, NULL, 12345678901);
+UPDATE postac SET statek=1 WHERE nazwa="%a%";
+UPDATE statek SET max_ladownosc=max_ladownosc*0.7 WHERE data_wodowania=data_wodowania>1900 && data_wodowania<20010101;
+SELECT * FROM postac WHERE wiek<1000;
+INSERT INTO postac VALUES(5, "Loko", "syrena", 14030311, 154, NULL, NULL, 14329505410);
+CREATE TABLE Marynarz LIKE postac;
+INSERT INTO Marynarz SELECT * FROM postac WHERE statek IS NOT NULL;
+
+
+
+
+
