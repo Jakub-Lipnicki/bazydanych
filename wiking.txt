@@ -55,7 +55,7 @@ SELECT * FROM postac WHERE wiek<1000;
 INSERT INTO postac VALUES(5, "Loko", "syrena", 14030311, 154, NULL, NULL, 14329505410);
 CREATE TABLE Marynarz LIKE postac;
 INSERT INTO Marynarz SELECT * FROM postac WHERE statek IS NOT NULL;
-
+1
 
 
 
