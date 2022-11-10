@@ -55,7 +55,15 @@ SELECT * FROM postac WHERE wiek<1000;
 INSERT INTO postac VALUES(5, "Loko", "syrena", 14030311, 154, NULL, NULL, 14329505410);
 CREATE TABLE Marynarz LIKE postac;
 INSERT INTO Marynarz SELECT * FROM postac WHERE statek IS NOT NULL;
-1
+UPDATE postac SET statek=NULL;
+DELETE FROM postac WHERE id_postaci=7;
+DELETE FROM statek WHERE nazwa_statku=1;
+DELETE FROM statek WHERE nazwa_statku=2;
+ ALTER TABLE postac DROP FOREIGN KEY postac_ibfk_1;
+ DROP TABLE statek;
+CREATE TABLE zwierz(id int NOT NULL PRIMARY KEY AUTO_INCREMENT, nazwa varchar(40), wiek int);
+INSERT INTO zwierz VALUES (1, "Drozda", 5);
+
 
 
 
