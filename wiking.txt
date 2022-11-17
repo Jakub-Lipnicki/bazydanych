@@ -1,4 +1,4 @@
- CREATE TABLE postac (id_postaci int NOT NULL PRIMARY KEY AUTO_INCREMENT, nazwa varchar(40), rodzaj ENUM('wiking', 'ptak', 'kobieta'), data_ur DATE, wiek int unsigned);
+CREATE TABLE postac (id_postaci int NOT NULL PRIMARY KEY AUTO_INCREMENT, nazwa varchar(40), rodzaj ENUM('wiking', 'ptak', 'kobieta'), data_ur DATE, wiek int unsigned);
 
 
  INSERT INTO postac VALUES (1, "Bjorn", "wiking", "1503-03-15", 35);
@@ -77,6 +77,16 @@ SELECT * FROM kreatura WHERE rodzaj NOT IN("wiedzma") AND udzwig>50;
 SELECT * FROM zasob WHERE waga>1 AND waga<6;
 SELECT * FROM kreatura WHERE nazwa LIKE "%or%";
  SELECT * FROM kreatura WHERE nazwa LIKE "%or%" AND udzwig>29 && udzwig<71;
+SELECT * FROM zasob WHERE monthname(dataPozyskania)="August" OR monthname(dataPozyskania)="july";
+SELECT * FROM zasob ORDER BY(waga);
+SELECT * FROM kreatura ORDER BY dataUr LIMIT 5;
+SELECT rodzaj FROM zasob GROUP BY rodzaj HAVING COUNT(rodzaj)=1;
+SELECT CONCAT(nazwa, " - ", rodzaj) FROM kreatura WHERE rodzaj LIKE "wi%";
+SELECT *, CONCAT(ilosc*waga) as WAGCAL FROM zasob WHERE dataPozyskania BETWEEN CAST('2000-01-01' AS DATE) AND CAST('2007-12-30' AS DATE);
+SELECT *, CONCAT(ilosc*waga*0.7) AS NETTOWAG, CONCAT(ilosc*waga*0.3) AS ODPADKI FROM zasob;
+SELECT * FROM zasob WHERE rodzaj IS NULL;
+SELECT DISTINCT nazwa FROM zasob WHERE nazwa LIKE "Ba%" OR nazwa LIKE "%os" ORDER BY nazwa asc;
+
 
 
 
