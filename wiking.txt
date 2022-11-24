@@ -87,6 +87,17 @@ SELECT *, CONCAT(ilosc*waga*0.7) AS NETTOWAG, CONCAT(ilosc*waga*0.3) AS ODPADKI 
 SELECT * FROM zasob WHERE rodzaj IS NULL;
 SELECT DISTINCT nazwa FROM zasob WHERE nazwa LIKE "Ba%" OR nazwa LIKE "%os" ORDER BY nazwa asc;
 
+LEKCJA 4
+SELECT CONCAT(SUM(waga)/COUNT(waga)) FROM kreatura WHERE rodzaj="wiking";
+SELECT rodzaj,CONCAT(SUM(waga)/COUNT(waga)), CONCAT(COUNT(rodzaj)) FROM kreatura GROUP BY rodzaj;
+SELECT rodzaj, SUM(TIMESTAMPDIFF(YEAR,dataUr,CURDATE()))/COUNT(rodzaj) AS wiek FROM kreatura GROUP BY rodzaj;
+SELECT rodzaj, SUM(waga) FROM zasob GROUP BY rodzaj;
+SELECT nazwa, SUM(waga)/COUNT(ilosc) FROM zasob WHERE ilosc>3 AND waga*ilosc>10 GROUP BY nazwa;
+?^
+SELECT COUNT(DISTINCT nazwa), rodzaj FROM zasob WHERE ilosc>1 GROUP BY rodzaj;
+
+
+
 
 
 
