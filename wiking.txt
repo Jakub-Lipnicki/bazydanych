@@ -95,9 +95,13 @@ SELECT rodzaj, SUM(waga) FROM zasob GROUP BY rodzaj;
 SELECT nazwa, SUM(waga)/COUNT(ilosc) FROM zasob WHERE ilosc>3 AND waga*ilosc>10 GROUP BY nazwa;
 ?^
 SELECT COUNT(DISTINCT nazwa), rodzaj FROM zasob WHERE ilosc>1 GROUP BY rodzaj;
+SELECT kreatura.nazwa, SUM(ekwipunek.ilosc) AS ilosc FROM kreatura INNER JOIN ekwipunek ON kreatura.idKreatury=ekwipunek.idKreatury GROUP BY nazwa;
+SELECT kreatura.nazwa, CONCAT(zasob.rodzaj, "-" ,zasob.rodzaj) AS PosiadaneZasoby FROM kreatura INNER JOIN ekwipunek ON kreatura.idKreatury=ekwipunek.idKreatury INNER JOIN zasob ON ekwipunek.idZasobu=zasob.idZasobu GROUP BY nazwa;
 
 
+2. Wyświetlić dla każdej kreatury nazwy zasobów jakie posiada.
 
+3. Wyświetlić kreatury, które nie posiadają żadnego ekwipunku.
 
 
 
