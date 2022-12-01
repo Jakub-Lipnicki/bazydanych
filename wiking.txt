@@ -96,7 +96,11 @@ SELECT nazwa, SUM(waga)/COUNT(ilosc) FROM zasob WHERE ilosc>3 AND waga*ilosc>10 
 ?^
 SELECT COUNT(DISTINCT nazwa), rodzaj FROM zasob WHERE ilosc>1 GROUP BY rodzaj;
 SELECT kreatura.nazwa, SUM(ekwipunek.ilosc) AS ilosc FROM kreatura INNER JOIN ekwipunek ON kreatura.idKreatury=ekwipunek.idKreatury GROUP BY nazwa;
-SELECT kreatura.nazwa, CONCAT(zasob.rodzaj, "-" ,zasob.rodzaj) AS PosiadaneZasoby FROM kreatura INNER JOIN ekwipunek ON kreatura.idKreatury=ekwipunek.idKreatury INNER JOIN zasob ON ekwipunek.idZasobu=zasob.idZasobu GROUP BY nazwa;
+SELECT kreatura.nazwa, zasob.nazwa FROM kreatura JOIN ekwipunek ON ekwipunek.idKreatury = kreatura.idKreatury JOIN zasob ON zasob.idZasobu = ekwipunek.idZasobu;
+SELECT kreatura.nazwa FROM kreatura LEFT JOIN ekwipunek ON kreatura.idKreatury = ekwipunek.idKreatury WHERE ekwipunek.idKreatury IS NULL;
+SELECT kreatura.nazwa, zasob.nazwa FROM kreatura JOIN ekwipunek ON ekwipunek.idKreatury = kreatura.idKreatury JOIN zasob ON zasob.idZasobu = ekwipunek.idZasobu WHERE kreatura.rodzaj="wiking" AND kreatura.dataUr BETWEEN DATE(1670)
+AND YEAR(1680);
+ 
 
 
 2. Wyświetlić dla każdej kreatury nazwy zasobów jakie posiada.
