@@ -98,11 +98,17 @@ SELECT COUNT(DISTINCT nazwa), rodzaj FROM zasob WHERE ilosc>1 GROUP BY rodzaj;
 SELECT kreatura.nazwa, SUM(ekwipunek.ilosc) AS ilosc FROM kreatura INNER JOIN ekwipunek ON kreatura.idKreatury=ekwipunek.idKreatury GROUP BY nazwa;
 SELECT kreatura.nazwa, zasob.nazwa FROM kreatura JOIN ekwipunek ON ekwipunek.idKreatury = kreatura.idKreatury JOIN zasob ON zasob.idZasobu = ekwipunek.idZasobu;
 SELECT kreatura.nazwa FROM kreatura LEFT JOIN ekwipunek ON kreatura.idKreatury = ekwipunek.idKreatury WHERE ekwipunek.idKreatury IS NULL;
-
-Zadanie 4
- 3.Wypisz obok siebie nazwy kreatur, których numer idKreatury różni się o 5 (np. Bjorn -Astrid, Brutal -Ibra itd.).
 SELECT kreatura.nazwa, zasob.nazwa FROM kreatura JOIN ekwipunek ON ekwipunek.idKreatury = kreatura.idKreatury JOIN zasob ON zasob.idZasobu = ekwipunek.idZasobu WHERE kreatura.rodzaj="wiking" AND (kreatura.dataUr BETWEEN '1670-01-01' AND '1680-01-01') GROUP BY kreatura.nazwa;
 SELECT DISTINCT kreatura.nazwa FROM kreatura JOIN ekwipunek ON ekwipunek.idKreatury = kreatura.idKreatury JOIN zasob ON zasob.idZasobu = ekwipunek.idZasobu WHERE zasob.rodzaj="jedzenie" ORDER BY kreatura.dataUr desc LIMIT 5;
+SELECT CONCAT(kreatura.nazwa, " - ", kreatura.idKreatury+5) AS NAZWY FROM kreatura;
+ZAD5
+SELECT kreatura.rodzaj, AVG(zasob.waga) FROM kreatura JOIN ekwipunek ON kreatura.idKreatury=ekwipunek.idKreatury JOIN zasob ON ekwipunek.idKreatury=zasob.idZasobu WHERE kreatura.rodzaj!="waz" AND kreatura.rodzaj!="malpa" AND ekwipunek.ilosc<30 GROUP BY kreatura.rodzaj;
+
+2.Dla każdego rodzaju kreatury wyświetlić nazwę, 
+datę urodzenia i rodzaj najmłodszej i najstarszej kreatury.
+
+
+
 
 
  
