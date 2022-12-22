@@ -107,11 +107,19 @@ SELECT kreatura.rodzaj, AVG(zasob.waga) FROM kreatura JOIN ekwipunek ON kreatura
 2.Dla każdego rodzaju kreatury wyświetlić nazwę, 
 datę urodzenia i rodzaj najmłodszej i najstarszej kreatury.
 LEKCJA 5
+ZAD 1
+CREATE TABLE kreatura AS SELECT * FROM wikingowie.kreatura;
+CREATE TABLE uczestnicy AS SELECT * FROM wikingowie.uczestnicy;
+CREATE TABLE etapy_wyprawy AS SELECT * FROM wikingowie.etapy_wyprawy;
+CREATE TABLE sektor AS SELECT * FROM wikingowie.sektor;
+CREATE TABLE wyprawa AS SELECT * FROM wikingowie.wyprawa;
 
-Zadanie 1
-1.Przekopiuj jeszcze raz z bazy wikingowie rekordy z tabeli kreatura, przekopiuj dodatkowo tabele: uczestnicy, etapy_wyprawy, sektor, wyprawa, wraz z danymi. 
-2.Wypisz nazwy kreatur, które nie uczestniczyły w żadnej wyprawie.
-3.Dla każdej wyprawy wypisać jej nazwę oraz sumę ilości ekwipunku, jaka została zabrana przez uczestników tej wyprawy.
+SELECT kreatura.nazwa FROM kreatura JOIN uczestnicy ON kreatura.idKreatury=uczestnicy.id_uczestnika;
+
+SELECT wyprawa.nazwa, SUM(ekwipunek.ilosc) AS EKW_ZEB FROM wyprawa JOIN uczestnicy ON wyprawa.id_wyprawy=uczestnicy.id_wyprawy JOIN ekwipunek ON uczestnicy.id_uczestnika=ekwipunek.idKreatury;
+
+
+
 
 
 
