@@ -113,10 +113,25 @@ CREATE TABLE uczestnicy AS SELECT * FROM wikingowie.uczestnicy;
 CREATE TABLE etapy_wyprawy AS SELECT * FROM wikingowie.etapy_wyprawy;
 CREATE TABLE sektor AS SELECT * FROM wikingowie.sektor;
 CREATE TABLE wyprawa AS SELECT * FROM wikingowie.wyprawa;
-
 SELECT kreatura.nazwa FROM kreatura JOIN uczestnicy ON kreatura.idKreatury=uczestnicy.id_uczestnika;
-
 SELECT wyprawa.nazwa, SUM(ekwipunek.ilosc) AS EKW_ZEB FROM wyprawa JOIN uczestnicy ON wyprawa.id_wyprawy=uczestnicy.id_wyprawy JOIN ekwipunek ON uczestnicy.id_uczestnika=ekwipunek.idKreatury;
+ZAD 2
+select wyprawa.nazwa, COUNT(uczestnicy.id_uczestnika) AS ILOSC_UCZESTNIKOW, GROUP_CONCAT(kreatura.nazwa) AS NAZWY_UCZESTNIKOW from wyprawa JOIN uczestnicy ON uczestnicy.id_wyprawy=wyprawa.id_wyprawy JOIN kreatura ON kreatura.idKreatury=uczestnicy.id_uczestnika GROUP BY wyprawa.nazwa;
+select idWyprawy, GROUP_CONCAT(sektor.nazwa), kreatura.nazwa from etapy_wyprawy JOIN sektor ON sektor.id_sektora=etapy_wyprawy.sektor JOIN wyprawa ON wyprawa.id_wyprawy=etapy_wyprawy.idWyprawy JOIN kreatura ON kreatura.idKreatury=wyprawa.kierownik GROUP BY etapy_wyprawy.idWyprawy ORDER BY wyprawa.data_rozpoczecia AND etapy_wyprawy.kolejnosc;
+ZAD 3
+select sektor.nazwa, COUNT(IFNULL(etapy_wyprawy.sektor, 0)) AS ilosc_odwiedzin from sektor JOIN etapy_wyprawy ON etapy_wyprawy.sektor=sektor.id_sektora GROUP BY sektor.nazwa;
+^NIE WYSWIETLA ZERA
+select kreatura.nazwa, IF(COUNT(uczestnicy.id_wyprawy)>0, 'BRAL UDZIAL', 'NIE BRAL UDZIALU') from kreatura JOIN uczestnicy ON uczestnicy.id_uczestnika=kreatura.idKreatury GROUP BY kreatura.nazwa;
+ZAD 4
+select wyprawa.nazwa, CHAR_LENGTH(etapy_wyprawy.dziennik) FROM wyprawa JOIN etapy_wyprawy ON etapy_wyprawy.idWyprawy=wyprawa.id_wyprawy GROUP BY wyprawa.nazwa;
+^?
+select wyprawa.nazwa, CONCAT(SUM(ekwipunek.idZasobu*ekwipunek.ilosc)/COUNT(uczestnicy.id_uczestnika)) AS srednia_waga from wyprawa JOIN uczestnicy ON uczestnicy.id_wyprawy=wyprawa.id_wyprawy JOIN ekwipunek ON ekwipunek.idKreatury=uczestnicy.id_uczestnika GROUP BY wyprawa.nazwa;
+ZAD 5
+select kreatura.nazwa, DATEDIFF(wyprawa.data_rozpoczecia, kreatura.dataUr) from kreatura JOIN uczestnicy ON uczestnicy.id_uczestnika=kreatura.idKreatury JOIN wyprawa ON wyprawa.id_wyprawy=uczestnicy.id_wyprawy JOIN etapy_wyprawy ON etapy_wyprawy.idWyprawy=wyprawa.id_wyprawy WHERE etapy_wyprawy.sektor=7 group by kreatura.nazwa;
+
+
+
+
 
 
 
