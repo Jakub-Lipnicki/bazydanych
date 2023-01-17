@@ -137,6 +137,14 @@ create trigger zadpie before insert on kreatura for each row begin if(new.waga>0
 ZAD 2
 create table archiwum_wypraw (id_wyprawy int PRIMARY KEY, nazwa varchar(40), data_rozpoczecia DATE, data_zakonczenia DATE, kierownik varchar(20));
  create trigger zaddru after delete on wyprawa for each row begin insert into archiwum_wypraw(kierownik) values(kreatura.nazwa); end //
+ZAD 3
+create procedure eliksir_sily(in idKreatury int) begin update kreatura set udzwig=udzwig*1.2; end//
+
+create function wielkie_liter(tekst varchar(30)) returns varchar(30) deterministic return UPPER(tekst); //
+
+ZAD 4
+create table system_alarmowy(id_alarmu int NOT NULL, wiadomosc varchar(40));
+
 
 
 
