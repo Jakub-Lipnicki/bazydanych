@@ -1,0 +1,257 @@
+indeksy:
+-glownym celem indeksu jest pzryspieszenie wyszukiwania
+-plik w ktorym sa klucze i plik wskazania gdzie sie cos znajdure
+CREATE INDEX nazwaindeksu ON nazwatabeli(pole1,pole2.....polen);
+
+zad1
+Stwórz tabelę o nazwie pracownik z kolumnami:
+create table pracownik(id int PRIMARY KEY AUTO_INCREMENT, imie varchar(50) NOT NULL, nazwisko varchar(100) NOT NULL, data_urodzenia DATE, stanowisko ENUM('sprzedawca', 'magazynier', 'ksiegowa'));
+zad2
+Wstaw do tabeli pracownik trzy rekordy z różnymi wartościami.
+
+insert into pracownik values(id, 'jan','kowalski', '2000-03-15', 'sprzedawca');
+zad3
+Stwórz tabelę dzial z kolumnami:
+
+create table dzial(id int PRIMARY KEY AUTO_INCREMENT, nazwa varchar(255));
+zad4
+Dodaj trzy działy do tabeli dzial: sprzedaż,  księgowość, magazyn
+
+insert into dzial values(1,"sprzedaz");
+zad5
+Ustaw wartość domyślną kolumny stanowisko w tabeli pracownik na 'sprzedawca'.
+
+alter table pracownik alter stanowisko set default 'sprzedawca';
+zad6
+Dodaj do tabeli pracownik kolumnę pensja jako liczba zmiennoprzecinkowa (float) z 5 miejscami całkowitymi i 2 dziesiętnymi. Uzupełnij kolumnę wartościami.
+
+alter table pracownik add column pensja float(7,2);
+update pracownik set pensja=1500.22 where id=3;
+zad7
+Zmień w tabeli dzial nazwę kolumny nazwa na nazwa_dzialu, id na id_dzialu, w tabeli pracownik kolumnę id na id_pracownika.
+
+alter table dzial rename column id to id_dzialu;
+alter table pracownik rename column id to id_pracownika;
+zad8
+Usuń z tabeli pracownik pracownika o najwyższej wartości pola id_pracownika.
+
+delete from pracownik order by id_pracownika limit 1;
+zad9
+Do tabeli pracownik dodaj kolumnę dzial i ustaw ją jako klucz obcy do tabeli dzial. Usuwanie rekordów potomnych powinno być uniemożliwione. Sprawdź czy mechanizm spójności działa. Przypisz pracowników do działów.
+
+alter table pracownik add column dzial int, add foreign key(dzial) references dzial(id_dzialu);
+DODAC ON DELETE CASCADE JESLI MA SIE ZAUTOATYCZNIE USUWAC
+update pracownik set dzial=1 where id_pracownika=3;
+zad10
+Utwórz tabelę stanowisko z kolumnami id_stanowiska (klucz główny) oraz nazwa_stanowiska. Dodaj rekordy, które będą zawierały wartości z tabeli pracownik i kolumny stanowisko.
+
+create table stanowiska(id_stanowiska int PRIMARY KEY, nazwa_stanowiska varchar(50));
+insert into stanowiska values(1, "spzredawca");
+zad11
+
+Zmień definicję kolumny stanowisko tak aby była kluczem obcym do tabeli stanowisko. Ustaw pracownikom wartość w tej kolumnie tak, żeby odzwierciedlała wcześniejszą wartość tekstową.
+
+alter table stanowiska modify nazwa_stanowiska ENUM('sprzedawca', 'ksiegowa', 'magazynier');
+
+zad12s
+Zmień definicję klucza obcego w tabeli pracownik w kolumnie dzial tak, aby przy usunięciu działu z tabeli dzial wstawiana była wartość NULL w kolumnie dzial tabeli pracownik.
+
+alter table pracownik modify dzial int, add foreign key(dzial) references dzial(id_dzialu) on delete cascade/moze byc tez on delete set null;
+
+
+ZESTAW 2
+zad1
+1.Z tabeli pracownik wyświetl nazwiska posortowane alfabetycznie od A do Z.
+
+select nazwisko from pracownik order by nazwisko; /desc na odwrot
+
+zad2
+2. Z tabeli pracownik wyświetl imie, nazwisko, pensję dla pracowników urodzonych po roku 1979.
+
+select imie,nazwisko,pensja from pracownik where data_urodzenia>'1979-01-01';
+
+zad3
+3. Z tabeli pracownik wyświetl wszystkie informacje dla pracowników z pensją pomiędzy 3500 a 5000.
+
+select * from pracownik where pensja BETWEEN 3500 and 5000;
+
+zad4
+4. Z tabeli stan_magazynowy wyświetl towary, których ilość jest większa niż 10.
+
+select towar from stan_magazynowy where ilosc>10;
+zad5
+5. Z tabeli towar wyświetl wszystkie towary, których nazwa zaczyna się od A, B lub C.
+
+select * from towar where nazwa_towaru LIKE "A%" OR nazwa_towaru LIKE "B%" OR nazwa_towaru LIKE "C%";
+
+zad6
+6. Z tabeli klient wyświetl wszystkich klientów indywidualnych (nie firmy).
+
+select * from klient where czy_firma=0;
+
+zad7
+7. Z tabeli zamowienie wyświetl 10 najnowszych zamówień.
+
+select * from zamowienie order by data_zamowienia desc limit 5;
+
+zad8
+8. Z tabeli pracownik wyświetl 5 najmniej zarabiających pracowników.
+
+select * from pracownik order by pensja limit 5;
+
+zad9
+9. Z tabeli towar wyświetl 10 najdroższych towarów, których nazwa nie zawiera litery 'a'.
+
+select * from towar where nazwa_towaru not like "%a%" order by cena_zakupu desc limit 10;
+^niepewny
+
+zad10
+10.Z tabeli towar wyświetl towar, których jednostka miary to 'szt', posortuj po nazwie (ad A do Z) następnie po cenie zakupu malejąco.
+select * from towar INNER JOIN stan_magazynowy ON stan_magazynowy.towar=towar.id_towaru where stan_magazynowy.jm=3;
+
+where za inner joinem(czesc wspolna)
+
+left i right wypisuje wszystkie wartosci anwet jak ta druga nie ma nic pzrypisane do niej
+
+zad11
+11. Stwórz nową tabelę o nazwie towary_powyzej_100, do której wstaw towary, których cena jest większa równa 100. Użyj CREATE ... SELECT.
+
+create table towary_powyzej_100 select * from towary where cena_zakupu>=100;
+
+zad12
+12. Stwórz nową tabelę o nazwie pracownik_50_plus na podstawie tabeli pracownik z wykorzystaniem LIKE. Wstaw do tej tabeli wszystkie rekordy z tabeli pracownik gdzie wiek pracownika jest większy równy 50 lat.
+
+timestampdiff(year, data_urodzenia, curdate()) as age
+^^^^wyswietlanie wieku
+
+insert into pracownik_50_plus select * from pracownik where timestampdiff(year, data_urodzenia, curdate())>20;
+
+DRUGA CZESC
+
+zad1
+1. Wyświetl imie, nazwisko i nazwę działu każdego pracownika.
+
+select pracownik.imie, pracownik.nazwisko, dzial.nazwa from pracownik INNER JOIN dzial ON dzial.id_dzialu=pracownik.dzial;
+
+zad2
+2. Wyświetl nazwę towaru, nazwę kategorii oraz ilość towaru i posortuj dane po kolumnie ilość malejąco.
+
+select towar.nazwa_towaru, kategoria.nazwa_kategori, stan_magazynowy.ilosc from towar inner join kategoria on kategoria.id_kategori=towar.kategoria inner join stan_magazynowy on stan_magazynowy.towar=towar.id_towaru;
+
+zad3
+3. Wyświetl wszystkie anulowane zamówienia.
+
+select * from zamowienie inner join status_zamowienia on status_zamowienia.id_statusu_zamowienia=zamowienie.status_zamowienia where status_zamowienia.id_statusu_zamowienia=6;
+
+zad4
+4. Wyświetl wszystkich klientów, których adres podstawowy znajduje się w miejscowości Olsztyn.
+
+select * from klient inner join adres_klienta on adres_klienta.klient=klient.id_klienta inner join typ_adresu on typ_adresu.id_typu=adres_klienta.typ_adresu where adres_klienta.typ_adresu=1 and adres_klienta.miejscowosc="Olsztyn";
+
+zad5
+5. Wyświetl wszystkie nazwy jednostek miary, które nie zostały nigdy wykorzystane w tabeli stan_magazynowy.
+
+select jednostka_miary.nazwa from jednostka_miary inner join stan_magazynowy on stan_magazynowy.jm=jednostka_miary.id_jednostki where stan_magazynowy.jm NOT LIKE 3;
+niepelne&&
+
+zad6
+
+zad7
+niewykonalne brak uprawnien
+zad8
+8. Wyświetl pozycje zamówień dla 5 najstarszych zamówień.
+
+select * from zamowienie order by data_zamowienia limit 5;
+
+zad9
+9. Wyświetl wszystkie zamówienia, które mają status inny niż zrealizowane.
+
+select * from zamowienie where status_zamowienia not like 5;
+
+zad10
+10. Wyświetl wszystkie adresy, których kod został niepoprawnie zapisany.
+
+select * from adres_klienta where kod not like '__-___';
+
+Funkcje, agregacja i grupowanie. 
+zad1
+Wyświetl imię i nazwisko każdego pracownika i jego rok urodzenia.
+
+select imie, nazwisko, data_urodzenia from pracownik;
+
+zad2
+Wyświetl imię i nazwisko pracowników oraz ich wiek w latach (bez uwzględniania miesiąca i dnia urodzenia).
+
+select imie, nazwisko, timestampdiff(year, data_urodzenia ,curdate()) from pracownik;
+
+zad3
+Wyświetl nazwę działu i liczbę pracowników przypisanych do każdego z nich.
+
+select dzial.nazwa, count(pracownik.dzial) from dzial inner join pracownik on pracownik.dzial=dzial.id_dzialu group by dzial.nazwa;
+
+zad4
+
+Wyświetl nazwę kategorii oraz liczbę produktów w każdej znich.
+select kategoria.nazwa_kategori, count(towar.kategoria) from kategoria inner join towar on towar.kategoria=kategoria.id_kategori group by kategoria.nazwa_kategori;
+
+zad5
+Wyświetl nazwę kategorii i w kolejnej kolumnie listę wszystkich produktów należącej do każdej z nich.
+
+select kategoria.nazwa_kategori, group_concat(towar.nazwa_towaru) from kategoria inner join towar on towar.kategoria=kategoria.id_kategori group by kategoria.nazwa_kategori;
+
+zad6
+Wyświetl średnie zarobki pracowników za zaokrągleniem do 2 miejsc po przecinku.
+
+select round(avg(pensja), 2) from pracownik;
+
+zad7
+Wyświetl średnie zarobki pracowników, którzy pracują co najmniej od 5 lat.
+select round(avg(pensja), 2) from pracownik where timestampdiff(year, data_zatrudnienia, curdate())>=5;
+
+zad8
+Wyświetl 10 najczęściej sprzedawanych produktów.
+select * from towar inner join pozycja_zamowienia on pozycja_zamowienia.towar=towar.id_towaru group by towar.nazwa_towaru order by count(pozycja_zamowienia.towar) desc limit 10;
+
+zad9
+Wyświetl numer zamówienia, jego wartość (suma wartości wszystkich jego pozycji) zarejestrowanych w pierwszym kwartale 2017 roku.
+
+select numer_zamowienia from zamowienie where data_zamowienia between '2017-01-01' and '2017-04-01';
+zad10
+
+
+Zadanie 1
+Wyświetl nazwę działu i minimalną, maksymalną i średnią wartość pensji w każdym dziale.
+ select dzial.nazwa, min(pracownik.pensja), max(pracownik.pensja), avg(pracownik.pensja) from dzial inner join pracownik on pracownik.dzial=dzial.id_dzialu;
+
+Zadanie 2
+Wyświetl pełną nazwę klienta, wartość zamówienia dla 10 najwyższych wartości zamówienia.
+
+Zadanie 1
+Wyświetl imiona i nazwiska pracowników oraz daty ich urodzenia dla pracowników, którzy będą mieli urodziny w bieżącym miesiącu. Dane posortuj rosnąco wg dnia miesiąca.
+select data_urodzenia from pracownik order by day(data_urodzenia);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
